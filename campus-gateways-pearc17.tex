@@ -1,0 +1,142 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{booktabs} % For formal tables
+
+% Copyright
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+
+% DOI
+%\acmDOI{10.475/123_4}
+
+% ISBN
+%\acmISBN{123-4567-24-567/08/06}
+
+%Conference
+\acmConference[PEARC17]{Practice \& Experience in Advanced Research Computing}{July 2017}{New Orleans, LO USA} 
+\acmYear{2017}
+\copyrightyear{2017}
+\acmPrice{15.00}
+
+\begin{document}
+\title{Experiences Providing a Multi-Tenanted Science Gateways Platform Service for Campus Cyberinfrastructure}
+
+\author{Eroma Abeysinghe}
+\affiliation{
+  \institution{Science Gateway Research Center}
+  \institution{Indiana University}
+  \city{Bloomington} 
+  \state{IN}
+  \country{USA} }
+\email{eabeysin@iu.edu}
+
+\author{Suresh Marru}
+\affiliation{
+  \institution{Science Gateway Research Center}
+   \institution{Indiana University}
+  \city{Bloomington} 
+  \state{IN}
+  \country{USA} }
+\email{smarru@iu.edu}
+
+\author{Sudhakar Pamidighantam}
+\affiliation{
+  \institution{Science Gateway Research Center}
+ \institution{Indiana University}
+  \city{Bloomington} 
+  \state{IN}
+  \country{USA} }
+\email{pamidigs@iu.edu}
+
+\author{Marlon Piece}
+\affiliation{
+  \institution{Science Gateway Research Center}
+   \institution{Indiana University}
+  \city{Bloomington} 
+  \state{IN}
+  \country{USA} }
+\email{marpierc@iu.edu}
+
+\keywords{Apache Airavata, Campus Cyberinfrastructure, Science Gateways}
+
+\maketitle
+
+\section{Introduction}
+
+Science gateways make it easy to access and use cyberinfrastructure for scientific research, education and visualization \cite{wilkins2008teragrid}. Cyberinfrastructure consists of computing systems, data storage systems, advanced instruments, visualization environments, and people, linked together to improve research productivity \cite{stewart2010cyberinfrastructure}. Computational tools are routinely employed in research, and colleges and universities increasingly need to support diverse set of users.  According to \cite{lawrence2015science}, at least 60\% of respondents indicated that Web-based gateway applications were ``somewhat'' or ``very'' important  for science research. This is supported by the fact that national Infrastructures such as XSEDE have more users accessing computational resources through Science Gateways than otherwise.
+
+As the cost of computing resources has gone down, the number of universities offering centralized computing resources has increased \cite{hacker2007making}. As approximate measures of this breadth, we note that the XSEDE campus champions program includes over 220 members, and the Open Science Grid has over 160 member sites at the time of writing. An obvious benefit of providing university-level computing infrastructure is that these resources are dedicated to the university community. An important but still relatively emerging trend is the federation of statewide and regional cyberinfrastructure. The typical motivation for this is for the large, research oriented universities in a state to support users at smaller colleges with less resources and expertise. The OneOklahoma Cyberinfrastructre Initiative (http://www.oneocii.okepscor.org/) is an example of this type of statewide cyberinfrastructure.
+
+We thus identify some challenges and an opportunities. Gateways have been very successful at the national cyberinfrastructure level, and there are a large number of universities that now offer centralized computing facilities for their local and regional users. Can gateways be adopted by campus and regional cyberinfrastructure deployments just as they are at the national level?  
+
+The case for many university computing centers to do this seems clear. Gateways are particularly useful for new users and also for simplifying access to well known applications that researchers may be running at smaller scale on their desktops and laboratory servers.  Gateways can thus provide a force multiplying effect on computing center support staff: well designed, stable and supported gateways provide users with a self-service mechanism for interacting with campus resources, freeing support staff and giving them more time to devote to high priority users and projects. 
+
+Science gateways can be built using a number of technologies \cite{mclennan2010hubzero}, \cite{dooley2012software}, \cite{marru2011apache}, \cite{goecks2010galaxy}, \cite{kluyver2016jupyter}.  These fall into two general categories: gateway providers may download the gateway software and run it locally, or the providers may make their computing resources available to a centrally administered gateway platform as a service. Several gateway frameworks provide both options.  There are tradeoffs for either approach. A key element in deciding which to choose is level of effort required from local computing cluster staff; if the gateway is taking too much support staff time to maintain, then it is not serving its purpose. 
+
+In the Science Gateways Platform as a service (https://scigap.org/) project, as the name indicates, we are focusing on the latter approach \cite{pierce2015patching}. We believe that using a centralized but transparent service will ultimately provide more benefits to gateway providers than running software locally: services can be maintained at the latest, unified versions, the support cycle can be reduced, and the gateway software providers can devote more resources to development and enhancement. 
+
+Such benefits do not simplify follow logically from having a platform service. This extended abstract describes the technical challenges for and experiences gained by providing a science gateways platform as a service for campus computing resources, and how these differ from XSEDE science gateways. We will discuss how we dealt with the challenges of enabling individual user accounts, multiple authentication mechanisms, legacy resources, disparate functional requirements of science researchers and non-uniform software stacks installed in resources. Finally the paper briefly discusses our future work in these areas.
+
+\section{Providing a Hosted Gateway Platform}
+At the most basic level, hosting a gateway using an existing instance of multi-tenant supporting middleware is a two-step process: 1) installation and 2) configuration.  However, in an university environment, there are situations that are going to add a layer of complexity to the installation. In order to host a gateway successfully we obtain the services from gateway providers, gateway administrators/PIs and cluster technical staff.  
+
+\begin{figure*}
+\includegraphics[height=4in, width=7in]{figures/gateway_deployments.pdf}
+\caption{Science gateways with Airavata middleware and computational resources}
+\end{figure*}
+
+Figure 1 illustrates a set of hosted gateways using Apache Airavata hosted middleware. One of the goals of the SciGaP project is to expand beyond our initial collaborating gateways (CIPRES, Neuroscience Gateway, and UltraScan) to provide a general purpose infrastructure.  The Identity Server \cite{nakandala2016apache} at the top of the figure provides authentication and authorization for Airavata and related SciGaP services shown in the middle box. 
+
+When deploying all these science gateways we identified three main categories:  general purpose gateways that need to support a diverse application set, domain-centric gateways that focus on a particular field of science, and application-centric gateways that focus on making a particular application or set of applications easier to use. Campus gateways fall into the general purpose category and are dedicated to a single campus and its collaborative research work. They may wish to offer up a very diverse set of applications.  Domain-centric gateways target a certain fields but more generic in providing applications to their users and are not tied to specific resources; that is, the gateway provider and the resource provider are distinct. In both cases, users will find mix combination of published and licensed applications as well as privately developed applications and softwares. Finally, application centric gateways (such as PHASTA and dREG) focus on providing only a single application or set of closely related applications in order to increase the usability and adoption of a particular code. Like domain-specific gateways, application gateways are not tied to specific resources. 
+
+So how does a potential gateway owner would go about requesting a gateway? As Figure 2 indicates they can request for a gateway through our SciGaP portal. When a request is made SciGaP team first need to approve and deploy the gateway. Then it would be notified to the gateway administrator  and he/she would need to configure the gateway preferences, applications, storage resources, etc..Once the initial gateway configurations are done users are invited to use the gateway for their job submissions. Although the steps makes it sound easy and straightforward practically it was challenging.
+
+\begin{figure*}
+\includegraphics[height=3in, width=7in]{figures/gateway-approvals.pdf}
+\caption{Workflow illustrating steps from requesting a gateway to using and providing support}
+\end{figure*}
+
+\section{Challenges Providing Campus Gateways}
+As we extend the SciGaP platform services to include campus resources, we encountered several challenges described below.
+No Community Accounts: Most of the institutions and campuses we have worked with have not wanted to distribute group or community accounts \cite{welch2007aaaa}. This is understandable given the need to account for computing resources, the need for security, and the possibility of audit. For this reason, we encourage users to use their own cluster allocation for job submissions. This leads to users having to take necessary steps to add their public keys to their cluster allocation, which in turn leads to more work for cluster administrators.  This is currently one of the primary issues we are working on. One solution involves automating the process of adding the public key to user allocation in the cluster.  For example,  when the user logs in to the gateway for the first time, a generated key will be added for ssh communications.
+
+Diverse User Management: Campuses follow different protocols when it comes to providing access to gateway users. Most users prefer to use their campus user login to access the portal because this avoids creating a new gateway account. This need resulted in Airavata implementing CILogin for campus gateways. Some campuses have LDAP servers dedicated to the cluster and want to use the same user-base within the gateway. Very rarely one or two gateways do want users to create gateway accounts to  provide access to the gateway, but rather want users registered in the gateway to have direct access without a vetting process. These variations are handled within Airavata through user authentication of the gateway. 
+
+Legacy Systems: While working with campus clusters we have encountered diverse job-schedulers and multiple versions of software applications. Clusters are designed to be refreshed every three years, but often they are not, and financial constraints and familiarity both contribute to the use of legacy software. In situations where old software is being run on an outdated infrastructure, technical issues with the gateway are going to occur.  Specifically, the lack of proper module commands forces significant collaboration between gateway consultants and gateway administrators. This challenge can only be mitigated through timely updates and proper maintenance of both software and hardware.  When gateway cluster-based issues arise  technical support from someone familiar with the cluster is essential. Many gateway clusters (especially campus clusters) do not have a specialized technical staff, and this complicates solving problems and increases wait times for doing so. It is expected that there is a gateway administrator that would champion the gateway from campus user support organization ably supported by their own cluster technical staff. 
+
+The automation of using clusters through gateways requires an automated job monitoring system to trigger job status updates. Currently the job monitoring system used in Airavata for gateways is email-based monitoring. In gateway clusters this is initially challenging because the email formats and the content are not automatically identified with  the job status. Multiple rounds of testing needs to be done in order to finalize email formats and content with correct job status updates. This requires time and energy from gateway providers, gateway administrators and cluster technical staff. In most cases the technical assistance is provided by the gateway administrators.
+
+Feature Support: Apache Airavata is open source software that anyone can contribute to. Apache Airavata supports the integration of arbitrary gateways through its Application Programming Interface (API), which can be used by any gateway developer. We provide also a reference implementation, the PHP Gateway for Airavata (PGA) that can be simply taken and used with minimal theming. 
+
+The key advantage of a centralized platform gateway is that it allows campus support staff to outsource their gateway operations. In our experience, campus gateway providers are less likely to want to make extensive customizations to their gateway when compared to application and domain-centric gateway providers. Campuses prefer to make requests for features and changes from the gateway providers.  When managing multiple gateways, gateway providers can end up with a pipeline of feature requests.  While this may result in delays from the gateway tenant?s point of view, it does help us as platform providers to identify particularly important, cross-cutting features that need to be implemented. 
+
+\section{Future Work}
+
+What do we have for the future? More improvements and features to make science research easier and science itself better. First, we must reduce the amount of human interactions that are needed in the process of deploying a gateway. Work is done to reduce the time for gateway deployment and configuration and to automate the process as much as possible to minimize this. Second, campus clusters are added to the gateway by the Airavata team.  In the future this will be a task for the gateway administrators themselves as they add more resources to their gateways and can start from working examples.  Third, we must unify the user provisioning process between the gateway and the cluster.  Currently this requires the manual step of adding public keys generated by the gateway to a user's authorized\_keys file in clusters. 
+
+Fourth, the diversity of deployments of schedulers and resource managers on campuses has challenged our current solutions for generating queuing scripts. This is due to dealings with variety of applications and softwares deployed in array of campus clusters. Rather than coming up with creative workarounds for each new deployment, a more refined application property configuration is required:. Fifth, we need to revisit our permission models to make it easier for ?power? users to have access to administrative methods in the API in order to control their deployments within a gateway. These operations are currently restricted to administrators. Gateway providers will have to decide whom to give this privilege. This way individual users can share their own applications with the gateway community. 
+
+With the experience of deploying gateway the main trait is the communication between the parties. Good communication builds healthy environment and trust between science communities and gateway providers.
+   
+
+%\begin{acks}
+%  The authors would like to thank Dr. Yuhua Li for providing the
+%  matlab code of  the \textit{BEPS} method. 
+%
+%  The authors would also like to thank the anonymous referees for
+%  their valuable comments and helpful suggestions. The work is
+%  supported by the \grantsponsor{GS501100001809}{National Natural
+%    Science Foundation of
+%    China}{http://dx.doi.org/10.13039/501100001809} under Grant
+%  No.:~\grantnum{GS501100001809}{61273304}
+%  and~\grantnum[http://www.nnsf.cn/youngscientsts]{GS501100001809}{Young
+%    Scientsts' Support Program}.
+%
+%\end{acks}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{campus-gateways-pearc17} 
+
+\end{document}
