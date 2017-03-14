@@ -29,7 +29,7 @@
 
 \author{Eroma Abeysinghe}
 \affiliation{
-  \institution{Science Gateway Research Center}
+  \institution{Science Gateways Research Center}
   \institution{Indiana University}
   \city{Bloomington}
   \state{IN}
@@ -38,7 +38,7 @@
 
 \author{Suresh Marru}
 \affiliation{
-  \institution{Science Gateway Research Center}
+  \institution{Science Gateways Research Center}
    \institution{Indiana University}
   \city{Bloomington}
   \state{IN}
@@ -47,7 +47,7 @@
 
 \author{Sudhakar Pamidighantam}
 \affiliation{
-  \institution{Science Gateway Research Center}
+  \institution{Science Gateways Research Center}
  \institution{Indiana University}
   \city{Bloomington}
   \state{IN}
@@ -56,7 +56,7 @@
 
 \author{Marlon Piece}
 \affiliation{
-  \institution{Science Gateway Research Center}
+  \institution{Science Gateways Research Center}
    \institution{Indiana University}
   \city{Bloomington}
   \state{IN}
@@ -71,7 +71,7 @@
 
 Science gateways make it easy to access and use cyberinfrastructure for scientific research, education and visualization \cite{wilkins2008teragrid}. Cyberinfrastructure consists of computing systems, data storage systems, advanced instruments, visualization environments, and people, linked together to improve research productivity \cite{stewart2010cyberinfrastructure}. Computational tools are routinely employed in research, and colleges and universities increasingly need to support diverse set of users.  According to \cite{lawrence2015science}, at least 60\% of respondents indicated that Web-based gateway applications were ``somewhat'' or ``very'' important  for science research. This is supported by the fact that national Infrastructures such as XSEDE have more users accessing computational resources through Science Gateways than otherwise.
 
-As the cost of computing resources has gone down, the number of universities offering centralized computing resources has increased \cite{hacker2007making}. As approximate measures of this breadth, we note that the XSEDE campus champions program includes over 220 members, and the Open Science Grid has over 160 member sites at the time of writing. An obvious benefit of providing university-level computing infrastructure is that these resources are dedicated to the university community. An important but still relatively emerging trend is the federation of statewide and regional cyberinfrastructure. The typical motivation for this is for the large, research-oriented universities in a state to support users at smaller colleges with less resources and expertise. The OneOklahoma Cyberinfrastructre Initiative (http://www.oneocii.okepscor.org/) is an example of this type of statewide cyberinfrastructure.
+As the cost of computing resources has gone down, the number of universities offering centralized computing resources has increased \cite{hacker2007making}. As approximate measures of this breadth, we note that the XSEDE campus champions program includes over 220 members, and the Open Science Grid has over 160 member sites at the time of writing. An obvious benefit of providing university-level computing infrastructure is that these resources are dedicated to the university community. An important but still relatively emerging trend is the federation of statewide and regional cyberinfrastructure. The typical motivation for this is for the large, research-oriented universities in a state to support users at smaller colleges with less resources and expertise. The ``OneOklahoma Cyberinfrastructre'' Initiative (http://www.oneocii.okepscor.org/) is an example of this type of statewide cyberinfrastructure.
 
 We thus identify some challenges and an opportunities. Gateways have been very successful at the national cyberinfrastructure level, and there are a large number of universities that now offer centralized computing facilities for their local and regional users. Can gateways be adopted by campus and regional cyberinfrastructure deployments just as they are at the national level?
 
@@ -91,7 +91,7 @@ Such benefits do not simplify follow logically from having a platform service. T
 
 At the most basic level, hosting a gateway using an existing instance of multi-tenant supporting middleware is a two-step process: 1) deployment and 2) configuration.  However, in a university environment, there are situations that are going to add a layer of complexity to the deployment. In order to host a gateway successfully we obtain the services from gateway providers, gateway administrators/PIs and cluster technical staff.
 
-Figure 1 illustrates a set of hosted gateways using Apache Airavata hosted middleware. One of the goals of the SciGaP project is to expand beyond our initial collaborating gateways (CIPRES, Neuroscience Gateway, and UltraScan) to provide a general purpose infrastructure.  The Identity Server \cite{nakandala2016apache} at the top of the figure provides authentication and authorization for Airavata and related SciGaP services shown in the middle box.
+Figure 1 illustrates a set of hosted gateways using Apache Airavata hosted middleware. One of the goals of the SciGaP project is to expand beyond our initial collaborating gateways (CIPRES, Neuroscience Gateway, and UltraScan) to provide a general purpose infrastructure.  The Identity Server \cite{nakandala2016apache} within Apache Airavata eco system integrates with Campus authentication via CILogon \cite{basney2014cilogon} service.
 
 When deploying these science gateways we identified three main categories:  general purpose gateways that need to support a diverse application set, domain-centric gateways that focus on a particular field of science, and application-centric gateways that focus on making a particular application or set of applications easier to use. Campus gateways fall into the general purpose category and are dedicated to a single campus and its collaborative research work. They may wish to offer up a very diverse set of applications.  Domain-centric gateways target  certain fields, but are more generic in providing applications to their users and are not tied to specific resources. That is, the gateway provider and the resource provider are distinct. In both cases, users will find a mixed combination of published and licensed applications, as well as privately developed applications and softwares. Finally, application centric gateways (such as PHASTA and dREG) focus on providing only a single application or set of closely related applications in order to increase the usability and adoption of a particular code. Like domain-specific gateways, application gateways are not tied to specific resources.
 
